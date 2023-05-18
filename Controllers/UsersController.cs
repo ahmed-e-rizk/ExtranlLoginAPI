@@ -6,17 +6,13 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using extranlLoginAPI.Context;
 using extranlLoginAPI.Context.Models;
 using extranlLoginAPI.Entities;
-using extranlLoginAPI.Interfaces;
-using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-using System.Security.Cryptography.Xml;
 
-namespace QuraanAPI.Controllers
+namespace extranlLoginAPI.Controllers
 {
     [AllowAnonymous]
     public class UsersController : Controller
@@ -50,7 +46,7 @@ namespace QuraanAPI.Controllers
         [AllowAnonymous]
         [HttpPost("Signup")]
         [Produces("application/json")]
-        [SwaggerResponse(200, "The user was signed up", typeof(ApiResponse))]
+       // [SwaggerResponse(200, "The user was signed up", typeof(ApiResponse))]
         public async Task<JsonResult> Signup(SignUpInput Input)
         {
             if (!ModelState.IsValid)
@@ -131,7 +127,7 @@ namespace QuraanAPI.Controllers
         [AllowAnonymous]
         [HttpPost("Signin")]
         [Produces("application/json")]
-        [SwaggerResponse(200, "The user was signed in", typeof(ApiResponseWithToken))]
+      //  [SwaggerResponse(200, "The user was signed in", typeof(ApiResponseWithToken))]
         public async Task<JsonResult> Signin(SignInInput Input)
         {
             if (!ModelState.IsValid)
@@ -204,7 +200,7 @@ namespace QuraanAPI.Controllers
         [AllowAnonymous]
         [HttpPost("ForgotPassword")]
         [Produces("application/json")]
-        [SwaggerResponse(200, "Password reset email got sent successfully", typeof(ApiResponse))]
+       // [SwaggerResponse(200, "Password reset email got sent successfully", typeof(ApiResponse))]
         public async Task<JsonResult> ForgotPassword([Required][EmailAddress] string email)
         {
             if (!ModelState.IsValid)
@@ -237,10 +233,10 @@ namespace QuraanAPI.Controllers
                 };
 
                 _dbContext.PasswordResetTokens.Add(passwordResetToken);
-            }
+            } 
             _dbContext.SaveChanges();
 
-            var body = string.Format(@"Hey {0}, Your token for password reset is {1}.", passwordResetToken.Token);
+            var body = string.Format(@"Hey {0}, Your token for password reset is {1}.", passwordResetToken.UserId, passwordResetToken.Token);
 
             var emailRequest = new MailRequest
             {
@@ -256,7 +252,7 @@ namespace QuraanAPI.Controllers
         [AllowAnonymous]
         [HttpPost("VerifyPasswordResetToken")]
         [Produces("application/json")]
-        [SwaggerResponse(200, "Password reset token is correct", typeof(ApiResponse))]
+       // [SwaggerResponse(200, "Password reset token is correct", typeof(ApiResponse))]
         public async Task<JsonResult> VerifyPasswordResetToken(
             [Required][EmailAddress] string email, [Required] string token)
         {
@@ -285,7 +281,7 @@ namespace QuraanAPI.Controllers
         [AllowAnonymous]
         [HttpPost("UpdatePassword")]
         [Produces("application/json")]
-        [SwaggerResponse(200, "Password updated successfully", typeof(ApiResponse))]
+      //  [SwaggerResponse(200, "Password updated successfully", typeof(ApiResponse))]
         public async Task<JsonResult> UpdatePassword(UpdatePasswordInput Input)
         {
             if (!ModelState.IsValid)
@@ -311,7 +307,7 @@ namespace QuraanAPI.Controllers
         [AllowAnonymous]
         [HttpPost("ResendPasswordResetToken")]
         [Produces("application/json")]
-        [SwaggerResponse(200, "Password reset email got sent successfully", typeof(ApiResponse))]
+     //   [SwaggerResponse(200, "Password reset email got sent successfully", typeof(ApiResponse))]
         public async Task<JsonResult> ResendPasswordResetToken([Required][EmailAddress] string email)
         {
             if (!ModelState.IsValid)
@@ -364,7 +360,7 @@ namespace QuraanAPI.Controllers
         [AllowAnonymous]
         [HttpGet("ExternalLogin")]
         [Produces("application/json")]
-        public IActionResult ExternalLogin(string? AuthScheme)
+        public IActionResult ExternalLogin(string? AuthScheme) 
         {
             var redirectUrl = Url.Action("ExternalLoginCallback", "Users");
 
@@ -422,9 +418,9 @@ namespace QuraanAPI.Controllers
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             if (user != null)
             {
+                
                 var token = _tokenService.BuildToken(_configuration["Jwt:Key"],
-                    _configuration["Jwt:Issuer"], user);
-
+                      _configuration["Jwt:Issuer"], user);
                 return new JsonResult(new
                 {
                     Status = true,

@@ -2,7 +2,7 @@
 using extranlLoginAPI.Interfaces;
 using extranlLoginAPI.Context.Models;
 
-namespace QuraanAPI.Services
+namespace extranlLoginAPI.Services
 {
     public class AccountService : IAccountService
     {

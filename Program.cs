@@ -4,9 +4,7 @@ using extranlLoginAPI.Interfaces;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
-using QuraanAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -75,6 +73,18 @@ builder.Services.AddAuthentication(opts =>
         }
     };
     opts.CallbackPath = new PathString("/signin-google");
+}).AddFacebook(opts =>
+{
+    opts.AppId = configurations["Authentication:Facebook:AppId"];
+    opts.AppSecret = configurations["Authentication:Facebook:AppSecret"];
+    opts.Events = new OAuthEvents()
+    {
+        OnRedirectToAuthorizationEndpoint = async ctx =>
+        {
+            await ctx.HttpContext.Response.WriteAsJsonAsync(new { Status = true, Message = "", Result = ctx.RedirectUri });
+        }
+    };
+    opts.CallbackPath = new PathString("/signin-facebook");
 })
 .AddJwtBearer(opts =>
 {

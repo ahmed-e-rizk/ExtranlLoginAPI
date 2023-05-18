@@ -6,9 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using extranlLoginAPI.Entities;
-
-namespace QuraanAPI.Services
+namespace extranlLoginAPI.Services
 {
     public class TokenService : ITokenService
     {
