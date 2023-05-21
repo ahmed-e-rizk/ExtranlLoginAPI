@@ -12,7 +12,7 @@ using extranlLoginAPI.Context;
 namespace extranlLoginAPI.Migrations
 {
     [DbContext(typeof(AppDbcontext))]
-    [Migration("20230517121750_a")]
+    [Migration("20230521071539_a")]
     partial class a
     {
         /// <inheritdoc />

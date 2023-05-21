@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 var configurations = builder.Configuration;
@@ -47,6 +48,10 @@ builder.Services.AddSwaggerGen(opts =>
 
     opts.EnableAnnotations();
 });
+builder.Services.AddDbContext<AppDbcontext>(opts =>
+{
+    opts.UseSqlServer(configurations.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(opts =>
 {
     opts.Password.RequireNonAlphanumeric = false;
@@ -63,6 +68,8 @@ builder.Services.AddAuthentication(opts =>
 
 .AddGoogle(opts =>
 {
+    //opts.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
     opts.ClientId = configurations["Authentication:Google:ClientId"];
     opts.ClientSecret = configurations["Authentication:Google:ClientSecret"];
     opts.Events = new OAuthEvents()
@@ -105,10 +112,7 @@ builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 
-builder.Services.AddDbContext<AppDbcontext>(opts =>
-{
-    opts.UseSqlServer(configurations.GetConnectionString("DefaultConnection"));
-});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
