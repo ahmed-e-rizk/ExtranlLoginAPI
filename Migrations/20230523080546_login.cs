@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace extranlLoginAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class a : Migration
+    public partial class login : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

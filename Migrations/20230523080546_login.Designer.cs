@@ -12,8 +12,8 @@ using extranlLoginAPI.Context;
 namespace extranlLoginAPI.Migrations
 {
     [DbContext(typeof(AppDbcontext))]
-    [Migration("20230521071539_a")]
-    partial class a
+    [Migration("20230523080546_login")]
+    partial class login
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

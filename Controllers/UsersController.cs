@@ -57,6 +57,7 @@ namespace extranlLoginAPI.Controllers
                     result = new { }
                 });
 
+
             var user = new IdentityUser
             {
                 UserName = Input.Email,
@@ -128,7 +129,7 @@ namespace extranlLoginAPI.Controllers
         [HttpPost("Signin")]
         [Produces("application/json")]
       //  [SwaggerResponse(200, "The user was signed in", typeof(ApiResponseWithToken))]
-        public async Task<JsonResult> Signin(SignInInput Input)
+        public async Task<JsonResult> Signin([FromBody] SignInInput Input)
         {
             if (!ModelState.IsValid)
                 return new JsonResult(new
